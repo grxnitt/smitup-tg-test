@@ -1,0 +1,764 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Telegram СМИТАП — тестовое тимлида</title>
+<meta name="description" content="Разбор весенней аналитики Telegram-каналов СМИТАП и 9 гипотез для каналов Эли Смит, Вили Брик и Ланы Сильвер.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Onest:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#F8F7FC; --card:#FFFFFF; --ink:#202020; --dark:#20242B; --muted:#757575; --line:#E8E6EF;
+  --orange:#FF7633; --orange2:#FF712D; --soft:#FFAA44; --peach:#FFE9DC; --teal:#4798A7; --mint:#D9F1EE;
+  --red:#F95D51; --berry:#C44B76; --violet:#6849AA; --green:#418A50;
+  --r:30px;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth;scroll-padding-top:90px}
+body{font-family:Onest,Arial,sans-serif;background:var(--bg);color:var(--ink);font-size:17px;line-height:1.5;-webkit-font-smoothing:antialiased;overflow-x:hidden;overflow-x:clip}
+html{overflow-x:clip}
+a{color:inherit}
+.wrap{max-width:1180px;margin:0 auto;padding:0 24px}
+h1,h2,h3{font-weight:800;letter-spacing:-.03em;line-height:.98}
+h2{font-size:clamp(36px,5.4vw,68px);margin-bottom:18px}
+h3{font-size:22px;letter-spacing:-.01em;line-height:1.15}
+.lead{font-size:clamp(17px,1.6vw,20px);color:#4a4a4a;max-width:720px}
+.o{color:var(--orange)}
+section.wrap{padding-top:110px;padding-bottom:30px}
+
+/* progress + nav */
+#progress{position:fixed;top:0;left:0;height:4px;background:var(--orange);width:0;z-index:60;border-radius:0 4px 4px 0}
+nav.top{position:fixed;top:14px;left:50%;transform:translateX(-50%);z-index:50;background:rgba(255,255,255,.86);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border-radius:100px;padding:8px 8px 8px 22px;display:flex;align-items:center;gap:6px;box-shadow:0 8px 30px rgba(32,36,43,.08);width:max-content;max-width:calc(100% - 24px)}
+nav.top .logo{font-weight:900;color:var(--orange);letter-spacing:-.02em;margin-right:10px;font-size:18px;white-space:nowrap}
+nav.top .links{display:flex;gap:2px;overflow-x:auto;scrollbar-width:none}
+nav.top .links::-webkit-scrollbar{display:none}
+nav.top a{text-decoration:none;font-size:14px;font-weight:600;padding:9px 14px;border-radius:100px;white-space:nowrap;transition:.25s}
+nav.top a:hover{background:var(--bg)}
+nav.top a.active{background:var(--dark);color:#fff}
+
+/* hero */
+.hero{padding:150px 0 60px;position:relative;text-align:center}
+.hero h1{font-size:clamp(38px,8.4vw,110px);max-width:1050px;margin:0 auto;letter-spacing:-.045em;line-height:.92}
+.hero .sub{margin:28px auto 0;max-width:640px;color:#555;font-size:clamp(17px,1.7vw,20px)}
+.sticker{display:inline-block;background:var(--orange);color:#fff;font-weight:800;padding:10px 18px;border-radius:14px;transform:rotate(-8deg);box-shadow:0 14px 30px rgba(255,118,51,.35);font-size:16px;letter-spacing:.01em;animation:drop 1s cubic-bezier(.2,1.6,.4,1) both .3s}
+.hero .sticker{position:absolute;top:92px;right:max(24px,calc(50% - 600px))}
+@keyframes drop{from{transform:translateY(-60px) rotate(-30deg);opacity:0}to{transform:rotate(-8deg);opacity:1}}
+.wobble{animation:wob 5s ease-in-out infinite}
+@keyframes wob{0%,100%{rotate:0deg}50%{rotate:4deg}}
+.btns{display:flex;gap:12px;justify-content:center;margin-top:36px;flex-wrap:wrap}
+.btn{display:inline-flex;align-items:center;gap:8px;padding:18px 30px;border-radius:100px;font-weight:700;text-decoration:none;font-size:16px;transition:transform .2s,box-shadow .2s}
+.btn:hover{transform:translateY(-2px)}
+.btn.or{background:var(--orange);color:#fff;box-shadow:0 10px 26px rgba(255,118,51,.35)}
+.btn.dk{background:var(--dark);color:#fff}
+.badges{display:flex;justify-content:center;gap:18px;margin-top:56px;flex-wrap:wrap}
+.badge{background:#fff;border-radius:var(--r);padding:22px 26px;display:flex;align-items:center;gap:14px;text-align:left;box-shadow:0 10px 30px rgba(32,36,43,.05);min-width:250px}
+.badge b{font-size:44px;font-weight:900;letter-spacing:-.04em;line-height:1;padding:10px 12px;border-radius:18px;background:var(--mint);color:var(--dark)}
+.badge:nth-child(2) b{background:var(--peach);color:var(--orange)}
+.badge:nth-child(3) b{background:var(--dark);color:#fff}
+.badge span{font-size:15px;color:#555;line-height:1.3;max-width:140px}
+.ai{margin:40px auto 0;max-width:720px;background:#fff;border:2px dashed #D9D4EA;border-radius:22px;padding:16px 22px;font-size:15px;color:#444;text-align:left;display:flex;gap:14px;align-items:flex-start}
+.ai .ico{font-size:26px;line-height:1}
+.ai b{color:var(--ink)}
+
+/* marquee */
+.marquee{overflow:hidden;background:var(--dark);color:#fff;padding:18px 0;margin-top:70px;transform:rotate(-1.2deg);width:104%;margin-left:-2%}
+.marquee .track{display:flex;gap:44px;width:max-content;animation:mq 40s linear infinite;font-weight:700;font-size:20px;white-space:nowrap}
+.marquee .track span{display:flex;align-items:center;gap:44px}
+.marquee .track span::after{content:"✦";color:var(--orange)}
+@keyframes mq{to{transform:translateX(-50%)}}
+
+/* tldr */
+.grid4{display:grid;grid-template-columns:repeat(2,1fr);gap:18px;margin-top:40px}
+.tl{background:#fff;border-radius:var(--r);padding:34px 34px 64px;position:relative;overflow:hidden}
+.tl>*:not(.big){position:relative;z-index:1}
+.tl .n{font-size:15px;font-weight:800;color:var(--orange);margin-bottom:14px;display:block}
+.tl h3{font-size:clamp(22px,2.2vw,28px);margin-bottom:12px;letter-spacing:-.02em}
+.tl p{color:#555}
+.tl.dark{background:var(--dark);color:#fff}
+.tl.dark p{color:#C9CBD2}
+.tl.or{background:var(--orange);color:#fff}
+.tl.or .n{color:#fff;opacity:.8}
+.tl.or p{color:#FFE6D8}
+.tl .big{position:absolute;right:-4px;bottom:-30px;font-size:110px;font-weight:900;letter-spacing:-.06em;opacity:.07;line-height:1}
+
+/* heatmap */
+.panel{background:#fff;border-radius:var(--r);padding:34px;margin-top:22px}
+.panel-head{display:flex;justify-content:space-between;gap:20px;align-items:flex-end;flex-wrap:wrap;margin-bottom:24px}
+.panel-head p{color:var(--muted);max-width:560px;font-size:15px}
+.tag{display:inline-block;font-size:13px;font-weight:700;padding:6px 12px;border-radius:100px;background:var(--bg);margin-bottom:10px}
+.heat{display:grid;grid-template-columns:minmax(120px,1.4fr) repeat(3,1fr);gap:6px}
+.heat .h{font-size:13px;font-weight:700;color:var(--muted);padding:4px 8px;text-transform:uppercase;letter-spacing:.04em}
+.heat .nm{font-weight:600;font-size:15px;padding:12px 8px;display:flex;align-items:center;gap:8px}
+.heat .nm i{font-style:normal;font-size:11px;font-weight:700;background:var(--bg);color:var(--muted);padding:3px 7px;border-radius:100px}
+.heat .c{border-radius:12px;padding:12px 8px;text-align:center;font-weight:800;font-size:15px;position:relative;cursor:default;opacity:0;transform:scale(.85);transition:opacity .5s,transform .5s cubic-bezier(.2,1.4,.4,1)}
+.heat.in .c{opacity:1;transform:none}
+.heat .c.apr{outline:2px solid transparent}
+.heat.focus .c.apr{outline-color:var(--dark)}
+.tip{position:fixed;pointer-events:none;background:var(--dark);color:#fff;font-size:13px;padding:10px 12px;border-radius:12px;z-index:80;opacity:0;transition:opacity .15s;line-height:1.45;white-space:nowrap}
+.legend{display:flex;gap:10px;align-items:center;font-size:13px;color:var(--muted);margin-top:16px;flex-wrap:wrap}
+.legend .bar{width:180px;height:10px;border-radius:10px;background:linear-gradient(90deg,#F95D51,#FDE3E0 48%,#E3F1F3 52%,#4798A7)}
+.callout{margin-top:22px;background:var(--peach);border-radius:20px;padding:18px 22px;display:flex;gap:14px;align-items:flex-start;font-size:16px}
+.callout .e{font-size:22px}
+.toggle-btn{border:0;background:var(--dark);color:#fff;font:600 14px Onest;padding:10px 16px;border-radius:100px;cursor:pointer}
+
+/* line chart */
+.two{display:grid;grid-template-columns:1.25fr 1fr;gap:22px;margin-top:22px}
+.pills{display:inline-flex;background:var(--bg);border-radius:100px;padding:5px;gap:4px;flex-wrap:wrap}
+.pills button{border:0;background:transparent;font:600 14px Onest;padding:9px 16px;border-radius:100px;cursor:pointer;color:var(--ink);transition:.25s}
+.pills button.on{background:#fff;box-shadow:0 4px 14px rgba(0,0,0,.08)}
+.chart svg{width:100%;height:auto;display:block;margin-top:16px;overflow:visible}
+.chart .lg{display:flex;gap:18px;flex-wrap:wrap;font-size:13px;color:var(--muted);margin-top:8px}
+.chart .lg span::before{content:"";display:inline-block;width:18px;height:3px;border-radius:3px;vertical-align:middle;margin-right:6px;background:currentColor}
+.chart .note{margin-top:16px;font-size:15px;color:#444;min-height:48px}
+.ln{fill:none;stroke-width:3.5;stroke-linecap:round;stroke-linejoin:round}
+.ln.draw{animation:draw 1.1s ease forwards}
+@keyframes draw{from{stroke-dashoffset:var(--len)}to{stroke-dashoffset:0}}
+.groups{display:flex;flex-direction:column;gap:18px}
+.grp{border-radius:22px;padding:24px;background:var(--bg)}
+.grp h3{margin-bottom:8px}
+.grp p{font-size:15px;color:#555}
+.grp .chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:12px}
+.grp .chips span{background:#fff;font-size:13px;font-weight:600;padding:6px 10px;border-radius:100px}
+.grp.up{background:var(--mint)}
+.why{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-top:22px}
+.why div{background:#fff;border-radius:22px;padding:22px}
+.why b{display:block;font-size:34px;font-weight:900;color:var(--orange);letter-spacing:-.04em;line-height:1;margin-bottom:10px}
+.why h3{font-size:18px;margin-bottom:6px}
+.why p{font-size:14px;color:#555}
+
+/* channels */
+.chs{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:40px}
+.ch{background:#fff;border-radius:var(--r);padding:28px;display:flex;flex-direction:column;gap:16px}
+.ch .top{display:flex;align-items:center;gap:14px}
+.ava{width:62px;height:62px;border-radius:50%;display:grid;place-items:center;color:#fff;font-weight:800;font-size:22px;flex-shrink:0;position:relative}
+.ava small{position:absolute;right:-8px;bottom:-6px;background:#fff;color:var(--ink);font-size:11px;padding:3px 7px;border-radius:100px;box-shadow:0 3px 10px rgba(0,0,0,.1);font-weight:800}
+.ch h3{font-size:22px}
+.ch .subj{font-size:14px;color:var(--muted)}
+.kpis{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.kpi{background:var(--bg);border-radius:16px;padding:12px}
+.kpi b{display:block;font-size:22px;font-weight:900;letter-spacing:-.03em}
+.kpi span{font-size:12px;color:var(--muted);line-height:1.2;display:block}
+.erbar{height:10px;background:var(--bg);border-radius:10px;overflow:hidden}
+.erbar i{display:block;height:100%;width:0;border-radius:10px;transition:width 1.4s cubic-bezier(.2,.8,.2,1)}
+.row{font-size:14.5px;display:flex;gap:10px}
+.row b{flex-shrink:0;width:22px;text-align:center}
+.goal{margin-top:auto;background:var(--dark);color:#fff;border-radius:16px;padding:12px 16px;font-weight:700;font-size:15px}
+.goal span{color:var(--soft)}
+.insight{margin-top:18px;background:var(--dark);color:#fff;border-radius:var(--r);padding:30px 34px;display:flex;gap:26px;align-items:center;flex-wrap:wrap}
+.insight b.big{font-size:clamp(40px,5vw,64px);font-weight:900;letter-spacing:-.05em;color:var(--orange);line-height:1}
+.insight p{max-width:760px;color:#D4D6DC;font-size:17px}
+.insight p strong{color:#fff}
+
+/* hypotheses */
+.tabs{display:inline-flex;background:#fff;border-radius:100px;padding:6px;gap:4px;margin-top:30px;flex-wrap:wrap}
+.tabs button{border:0;background:transparent;font:700 16px Onest;padding:12px 22px;border-radius:100px;cursor:pointer;color:var(--ink);transition:.25s;display:flex;align-items:center;gap:8px}
+.tabs button .dot{width:10px;height:10px;border-radius:50%}
+.tabs button.on{background:var(--dark);color:#fff}
+.hyp{display:none;grid-template-columns:1.15fr .85fr;gap:22px;margin-top:22px;align-items:start}
+.hyp.on{display:grid;animation:fade .5s ease}
+@keyframes fade{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+.hcards{display:flex;flex-direction:column;gap:14px}
+.hc{background:#fff;border-radius:24px;padding:24px 26px;border:2px solid transparent;transition:.25s;cursor:pointer}
+.hc:hover{border-color:#EDE9F7}
+.hc.star{border-color:var(--orange)}
+.hc .hd{display:flex;gap:14px;align-items:flex-start}
+.hc .code{flex-shrink:0;font-weight:900;font-size:15px;background:var(--bg);border-radius:12px;padding:8px 10px;letter-spacing:-.01em}
+.hc.star .code{background:var(--orange);color:#fff}
+.hc h3{font-size:20px;margin-bottom:6px}
+.hc p{font-size:15px;color:#555}
+.hc .m{margin-top:12px;display:flex;flex-wrap:wrap;gap:8px}
+.hc .m span{font-size:13px;font-weight:600;background:var(--bg);padding:6px 11px;border-radius:100px}
+.hc .m span.mt{background:var(--mint);color:#22606B}
+.hc .m span.ex{background:var(--peach);color:#C2531E}
+.hint{font-size:13px;color:var(--muted);margin-top:4px;padding-left:6px}
+
+/* telegram mock */
+.phone{position:sticky;top:96px;background:var(--dark);border-radius:42px;padding:12px;box-shadow:0 30px 60px rgba(32,36,43,.25);max-width:400px;width:100%;justify-self:center}
+.screen{border-radius:32px;overflow:hidden;background:#fff}
+.tgbar{display:flex;align-items:center;gap:10px;padding:14px 16px;background:#fff;border-bottom:1px solid #eee}
+.tgbar .back{color:#3A8FDB;font-size:22px;line-height:1}
+.tgbar .av{width:38px;height:38px;border-radius:50%;display:grid;place-items:center;color:#fff;font-weight:800;font-size:14px}
+.tgbar b{font-size:15px;display:block;line-height:1.2}
+.tgbar small{font-size:12.5px;color:#8a8a8a}
+.chat{background:#C9DCB8;background-image:radial-gradient(circle at 20% 20%,rgba(255,255,255,.25) 0 2px,transparent 3px),radial-gradient(circle at 70% 60%,rgba(255,255,255,.2) 0 2px,transparent 3px),linear-gradient(160deg,#D5E5BE,#A9CDA6 60%,#9CC3B0);background-size:46px 46px,60px 60px,100% 100%;padding:16px 12px 18px;height:540px;overflow:hidden;display:flex;flex-direction:column;justify-content:flex-end;gap:6px}
+.date{align-self:center;background:rgba(0,0,0,.18);color:#fff;font-size:12px;font-weight:600;padding:4px 10px;border-radius:100px;margin-bottom:6px}
+.msg{background:#fff;border-radius:16px 16px 16px 6px;padding:9px 12px 7px;font-size:14px;line-height:1.42;max-width:94%;box-shadow:0 1px 1px rgba(0,0,0,.08);opacity:0;transform:translateY(16px) scale(.97);transform-origin:left bottom}
+.msg.show{animation:pop .45s cubic-bezier(.2,1.3,.4,1) forwards}
+@keyframes pop{to{opacity:1;transform:none}}
+.msg .meta{display:flex;justify-content:flex-end;gap:6px;font-size:11.5px;color:#9a9a9a;margin-top:3px}
+.msg .cn{color:var(--orange);font-weight:700;font-size:13px;margin-bottom:2px}
+.msg.small{padding:7px 12px 5px}
+.msg .img{border-radius:12px;margin:-4px -8px 8px;height:150px;display:flex;flex-direction:column;justify-content:flex-end;padding:14px;color:#fff;font-weight:800;font-size:22px;line-height:1.05;letter-spacing:-.02em;position:relative;overflow:hidden}
+.msg .img small{font-size:11px;font-weight:700;letter-spacing:.06em;opacity:.85;margin-bottom:6px;text-transform:uppercase}
+.msg .img .dots{position:absolute;top:12px;right:12px;display:flex;gap:4px}
+.msg .img .dots i{width:6px;height:6px;border-radius:50%;background:rgba(255,255,255,.5)}
+.msg .img .dots i:first-child{background:#fff}
+.reacts{display:flex;gap:5px;margin-top:6px;flex-wrap:wrap}
+.reacts span{background:#EAF3FC;color:#3A8FDB;font-size:12.5px;font-weight:600;padding:3px 8px;border-radius:100px}
+.ikb{background:rgba(255,255,255,.55);backdrop-filter:blur(6px);border-radius:12px;text-align:center;font-size:14px;font-weight:600;color:#245a3a;padding:10px;opacity:0;transform:translateY(10px)}
+.ikb.show{animation:pop .45s ease forwards}
+.typing{align-self:flex-start;background:#fff;border-radius:16px;padding:10px 14px;display:flex;gap:4px}
+.typing i{width:7px;height:7px;border-radius:50%;background:#bbb;animation:ty 1s infinite}
+.typing i:nth-child(2){animation-delay:.15s}.typing i:nth-child(3){animation-delay:.3s}
+@keyframes ty{0%,100%{opacity:.3;transform:translateY(0)}50%{opacity:1;transform:translateY(-3px)}}
+.ba{display:flex;justify-content:center;margin:12px 0 2px}
+.ba .pills{background:#fff}
+.mock-cap{text-align:center;font-size:13px;color:#C9CBD2;padding:12px 6px 4px}
+
+/* start */
+.steps{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-top:40px;position:relative}
+.step{background:#fff;border-radius:24px;padding:26px;position:relative}
+.step .k{width:46px;height:46px;border-radius:50%;background:var(--orange);color:#fff;font-weight:900;display:grid;place-items:center;font-size:18px;margin-bottom:16px}
+.step:nth-child(2) .k{background:var(--dark)}
+.step:nth-child(3) .k{background:var(--teal)}
+.step:nth-child(4) .k{background:var(--berry)}
+.step h3{font-size:19px;margin-bottom:8px}
+.step p{font-size:14.5px;color:#555}
+.step .free{display:inline-block;margin-top:12px;font-size:12px;font-weight:700;background:var(--mint);color:#22606B;padding:5px 10px;border-radius:100px}
+
+/* final */
+.final{margin-top:110px;background:var(--soft);padding:90px 0 40px;overflow:hidden;position:relative}
+.final .giant{font-weight:900;font-size:clamp(80px,19vw,280px);letter-spacing:-.07em;line-height:.8;color:rgba(32,36,43,.82);white-space:nowrap;text-align:center;user-select:none}
+.final .card{max-width:760px;margin:-40px auto 0;background:#fff;border-radius:var(--r);padding:38px;text-align:center;position:relative;box-shadow:0 30px 60px rgba(32,36,43,.12)}
+.final .card h2{font-size:clamp(32px,4vw,50px);margin-bottom:12px}
+.final .card p{color:#555}
+details{max-width:760px;margin:22px auto 0;background:rgba(255,255,255,.6);border-radius:22px;padding:18px 24px;font-size:14.5px}
+summary{cursor:pointer;font-weight:700;list-style:none;display:flex;justify-content:space-between;align-items:center}
+summary::-webkit-details-marker{display:none}
+summary::after{content:"+";font-size:24px;color:var(--orange);font-weight:500;transition:.25s}
+details[open] summary::after{transform:rotate(45deg)}
+details ul{margin:14px 0 4px 18px;color:#444}
+details li{margin:6px 0}
+footer{text-align:center;font-size:13px;color:rgba(32,36,43,.6);padding:28px 0 0}
+
+
+/* answer block */
+.ans{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-top:40px}
+.ans-col{background:#fff;border-radius:var(--r);padding:34px}
+.ans-col.dark{background:var(--dark);color:#fff}
+.ans-h{display:flex;gap:16px;align-items:center;margin-bottom:22px}
+.num{flex-shrink:0;width:54px;height:54px;border-radius:18px;background:var(--orange);color:#fff;font-weight:900;font-size:26px;display:grid;place-items:center;transform:rotate(-6deg)}
+.ans-h small,.ans-strip small{display:block;font-size:13px;font-weight:700;color:var(--orange);text-transform:uppercase;letter-spacing:.04em;margin-bottom:4px}
+.ans-col.dark .ans-h small{color:var(--soft)}
+.ans-h h3{font-size:clamp(24px,2.4vw,30px);letter-spacing:-.02em}
+.ans-list{list-style:none;counter-reset:a;display:flex;flex-direction:column;gap:14px}
+.ans-list li{counter-increment:a;position:relative;padding-left:42px;font-size:16px;color:#555;line-height:1.45}
+.ans-list li::before{content:counter(a);position:absolute;left:0;top:0;width:28px;height:28px;border-radius:50%;background:var(--bg);color:var(--ink);font-weight:800;font-size:14px;display:grid;place-items:center}
+.ans-list li b{color:var(--ink)}
+.ans-col.dark .ans-list li{color:#C9CBD2}
+.ans-col.dark .ans-list li b{color:#fff}
+.ans-col.dark .ans-list li::before{background:#343944;color:#fff}
+.ans-strip{margin-top:18px;display:flex;align-items:center;gap:18px;background:var(--orange);color:#fff;border-radius:var(--r);padding:24px 30px;text-decoration:none;transition:transform .25s,box-shadow .25s;box-shadow:0 14px 30px rgba(255,118,51,.3)}
+.ans-strip:hover{transform:translateY(-3px)}
+.ans-strip .num{background:#fff;color:var(--orange)}
+.ans-strip small{color:#FFE1CF}
+.ans-strip b{font-size:clamp(18px,2vw,24px);font-weight:800;letter-spacing:-.01em;line-height:1.2;display:block}
+.ans-strip .arr{margin-left:auto;font-size:32px;font-weight:800;transition:transform .25s}
+.ans-strip:hover .arr{transform:translateX(6px)}
+/* clickable hypotheses */
+.hc{position:relative}
+.hc.on{border-color:var(--orange);box-shadow:0 12px 30px rgba(255,118,51,.15)}
+.hc.on .code{background:var(--orange);color:#fff}
+.hc .go{position:absolute;right:20px;top:22px;font-size:13px;font-weight:700;color:var(--muted);transition:.25s}
+.hc:hover .go{color:var(--orange)}
+.hc.on .go{color:var(--orange)}
+.hc .hd{padding-right:110px}
+/* poll / voice / doc in mocks */
+.poll{margin-top:8px}
+.poll .q{font-weight:700;margin-bottom:2px}
+.poll .lbl{font-size:12px;color:#8a8a8a;margin-bottom:6px}
+.opt{position:relative;margin-top:5px;padding:7px 10px;border-radius:9px;overflow:hidden;font-size:13.5px;display:flex;justify-content:space-between;gap:8px;background:#F4F6F8}
+.opt i{position:absolute;left:0;top:0;bottom:0;width:0;background:#DCEBFA;transition:width 1.1s cubic-bezier(.2,.8,.2,1) .25s}
+.opt.ok i{background:#CDEBD3}
+.opt span{position:relative;z-index:1}
+.opt.ok span:first-child::before{content:"✓ ";color:#2E8B57;font-weight:800}
+.msg.show .opt i{width:var(--w)}
+.opt b{position:relative;z-index:1;font-weight:700}
+.doc{display:flex;gap:10px;align-items:center;margin-bottom:8px}
+.doc .ic{width:42px;height:42px;border-radius:50%;background:#3A8FDB;color:#fff;display:grid;place-items:center;font-size:18px;flex-shrink:0}
+.doc b{display:block;font-size:13.5px}
+.doc small{font-size:12px;color:#8a8a8a}
+.voice{display:flex;align-items:center;gap:10px}
+.voice .pl{width:40px;height:40px;border-radius:50%;background:#3A8FDB;color:#fff;display:grid;place-items:center;font-size:14px;flex-shrink:0}
+.voice .wave{display:flex;align-items:center;gap:2px;height:26px}
+.voice .wave i{width:3px;border-radius:2px;background:#9CC4EC}
+.voice small{display:block;font-size:12px;color:#8a8a8a}
+.quote{border-left:3px solid #6849AA;background:#F3EFFA;border-radius:4px 8px 8px 4px;padding:6px 10px;margin:6px 0;font-style:italic}
+.cmt{margin-top:8px;border-top:1px solid #eee;padding-top:7px;color:#3A8FDB;font-weight:600;font-size:13.5px;display:flex;justify-content:space-between}
+.days{display:flex;gap:4px;margin:6px 0 2px}
+.days i{flex:1;height:6px;border-radius:6px;background:#E6ECEF}
+.days i.d{background:#4798A7}
+@media (max-width:960px){.ans{grid-template-columns:1fr}}
+@media (max-width:640px){.ans-col{padding:24px}.ans-strip{padding:20px}.ans-strip .arr{display:none}.hc{display:flex;flex-direction:column}.hc .go{position:static;order:3;margin-top:12px}.hc .hd{padding-right:0}}
+
+.faq{margin-top:18px;border-top:1px solid rgba(32,36,43,.12);padding-top:16px}
+.faq h4{font-size:17px;font-weight:800;margin-bottom:10px}
+.qa{background:#fff;border-radius:16px;padding:14px 16px;margin-top:10px}
+.qa b{display:block;margin-bottom:4px}
+.qa p{color:#555}
+/* reveal */
+.rv{opacity:0;transform:translateY(30px);transition:opacity .8s ease,transform .8s cubic-bezier(.2,.8,.2,1)}
+.rv.in{opacity:1;transform:none}
+.blur .w{display:inline-block;filter:blur(14px);opacity:0;transform:translateY(10px);transition:filter .8s,opacity .8s,transform .8s}
+.blur.in .w{filter:none;opacity:1;transform:none}
+
+@media (max-width:960px){
+  .two,.hyp{grid-template-columns:1fr}
+  .why,.steps{grid-template-columns:repeat(2,1fr)}
+  .chs{grid-template-columns:1fr}
+  .phone{position:relative;top:0}
+}
+@media (max-width:640px){
+  .wrap{padding:0 16px}
+  section.wrap{padding-top:80px;padding-bottom:20px}
+  .hero{padding-top:120px}
+  .hero .sticker{position:static;margin-bottom:22px}
+  .grid4,.why,.steps{grid-template-columns:1fr}
+  .tl,.panel{padding:24px}
+  .badge{min-width:0;width:100%}
+  nav.top{padding-left:14px}
+  nav.top .logo{display:none}
+  .heat{grid-template-columns:minmax(0,1.15fr) repeat(3,minmax(0,1fr));gap:4px}
+  .heat .h{padding:4px 2px;font-size:11px}
+  .heat .c{font-size:11.5px;padding:10px 1px;letter-spacing:-.02em}
+  .heat .nm{font-size:12.5px;padding:10px 2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;display:block}
+  .heat .nm i{display:none}
+  .heat .nm .sn{display:none}
+  .legend .bar{width:120px}
+  .tabs{display:flex}
+  .tabs button{flex:1;justify-content:center;padding:12px 10px;font-size:15px}
+  .final .card{margin:-20px 16px 0;padding:28px 22px}
+  .insight{padding:24px}
+}
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation:none!important;transition:none!important}
+  .rv,.blur .w,.heat .c,.msg,.ikb{opacity:1!important;transform:none!important;filter:none!important}
+}
+</style>
+</head>
+<body>
+<div id="progress"></div>
+<nav class="top">
+  <span class="logo">СМИТАП × TG</span>
+  <div class="links">
+    <a href="#tldr">Выводы</a>
+    <a href="#analytics">Аналитика</a>
+    <a href="#channels">Каналы</a>
+    <a href="#hypotheses">Гипотезы</a>
+    <a href="#start">Старт</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<header class="hero wrap">
+  <span class="sticker"><span class="wobble" style="display:inline-block">тестовое · тимлид TG</span></span>
+  <h1 class="blur" data-blur>Telegram СМИТАП: что&nbsp;с&nbsp;<span class="o">охватами</span> и&nbsp;что&nbsp;с&nbsp;этим делать</h1>
+  <p class="sub rv">Разобрал весеннюю аналитику 10 каналов и ленты Эли, Вили и Ланы. Ниже — что я вижу, почему так и что запустил бы первым.</p>
+  <div class="btns rv">
+    <a class="btn or" href="#tldr">Сразу к выводам ↓</a>
+    <a class="btn dk" href="#hypotheses">К гипотезам</a>
+  </div>
+  <div class="badges rv">
+    <div class="badge"><b data-count="29" data-suffix="/30">0</b><span>месячных планов из 30 не выполнены</span></div>
+    <div class="badge"><b data-count="-15" data-suffix="%">0</b><span>охватов потерял весь рынок Telegram с марта</span></div>
+    <div class="badge"><b data-count="9">0</b><span>гипотез с примерами постов</span></div>
+  </div>
+  <div class="ai rv">
+    <span class="ico">🤖</span>
+    <div><b>Честно:</b> собирал с ИИ — он помог выгрузить ленты каналов, посчитать цифры и сверстать эту страницу. Выводы, отбор гипотез и то, что я бы реально запустил, — мои.</div>
+  </div>
+</header>
+
+<div class="marquee" aria-hidden="true"><div class="track" id="mq"></div></div>
+
+<!-- TLDR -->
+<section id="tldr" class="wrap">
+  <span class="tag rv">Коротко</span>
+  <h2 class="blur" data-blur>Ответ на задание за минуту</h2>
+  <div class="ans">
+    <div class="ans-col rv">
+      <div class="ans-h"><span class="num">1</span><div><small>Задание №1 · вывод по аналитике</small><h3>Что я вижу в цифрах</h3></div></div>
+      <ol class="ans-list">
+        <li><b>План не выполнил ни один канал.</b> Мимо 29 из 30 месячных планов. Единственное исключение — Артём в апреле (104%).</li>
+        <li><b>Крупные каналы теряют охват.</b> Эля, Оля, Виля и Неля ниже прошлого года во всех трёх месяцах, хуже всего в апреле: −14…−21%.</li>
+        <li><b>Маленькие каналы растут, но до плана не дотягивают.</b> Даня ×5, Артём +23–33%, Саша +6–9% к прошлому году, а план ставили в 1,4–8 раз выше прошлогоднего факта.</li>
+        <li><b>Самые красные цифры мая — у Нели (−49%) и Кирилла (−58%).</b> Но это сравнение с разовым пиком мая 2025, а не обвал.</li>
+        <li><b>Май лучше апреля у Эли (+32,5%) и Вили (+8,9%).</b> Предэкзаменационный спрос есть, его надо удержать.</li>
+      </ol>
+    </div>
+    <div class="ans-col dark rv">
+      <div class="ans-h"><span class="num">1</span><div><small>Задание №1 · предположения</small><h3>Почему показатели такие</h3></div></div>
+      <ol class="ans-list">
+        <li><b>Замедление Telegram в РФ.</b> С середины марта рынок потерял 10–15% охватов, отсюда провал апреля сразу у всех каналов.</li>
+        <li><b>План считали от пиков.</b> Разовые всплески мая 2025 вошли в план, и обычный май 2026 выглядит провалом.</li>
+        <li><b>Рост без трафика.</b> Маленьким каналам заложили сильный рост, а закупка рекламы в TG по рынку просела.</li>
+        <li><b>Слишком плотная лента.</b> Чем больше постов в день, тем ниже средний охват поста: у Эли 43 → 67 постов в месяц.</li>
+        <li><b>Смена аудитории.</b> Весной выпускники уходят в финальную подготовку, а будущие 11-классники ещё только приходят.</li>
+      </ol>
+    </div>
+  </div>
+  <a class="ans-strip rv" href="#hypotheses">
+    <span class="num">2</span>
+    <span><small>Задание №2 · гипотезы</small><b>9 гипотез: по 3 для Эли, Вили и Ланы — у каждой пример поста</b></span>
+    <span class="arr">→</span>
+  </a>
+</section>
+
+<!-- ANALYTICS -->
+<section id="analytics" class="wrap">
+  <span class="tag rv">Задание №1 · подробнее</span>
+  <h2 class="blur" data-blur>Откуда эти выводы</h2>
+  <p class="lead rv">Средний охват поста за март–май: факт 2025, план и факт 2026. Три картинки, на которых всё видно.</p>
+
+  <div class="panel rv">
+    <div class="panel-head">
+      <div>
+        <span class="tag">Инсайт 1</span>
+        <h3 style="font-size:clamp(24px,2.6vw,32px)">Апрель просел почти у всех сразу</h3>
+      </div>
+      <button class="toggle-btn" id="focusApr">Подсветить апрель</button>
+    </div>
+    <div class="heat" id="heat"></div>
+    <div class="legend"><span>год к году</span><span class="bar"></span><span>−50%</span><span>0</span><span>+50% и выше</span></div>
+    <div class="callout"><span class="e">📉</span><div>Март → апрель: Эля −3,8 → <b>−16,4%</b>, Оля −8,9 → <b>−20,5%</b>, Неля −13,5 → <b>−18,8%</b>, Миша +43,9 → <b>+6,6%</b>, Кирилл +14,5 → <b>−1,1%</b>. Если все просели синхронно, причина общая. С середины марта замедлили Telegram, а 24 марта Эля сама звала подписчиков на запасные площадки.</div></div>
+  </div>
+
+  <div class="two">
+    <div class="panel chart rv" style="margin-top:0">
+      <span class="tag">Инсайт 2</span>
+      <h3 style="font-size:clamp(24px,2.6vw,32px);margin-bottom:10px">Ловушка прошлогоднего пика</h3>
+      <p style="font-size:15px;color:#555;margin-bottom:16px">План на 2026 считали от прошлого года. Но если в мае 2025 был разовый всплеск (вирусный пост, запуск, реклама), он попадает в план, и нормальный месяц потом выглядит провалом. Переключай каналы — серая линия показывает этот пик.</p>
+      <div class="pills" id="lineP"></div>
+      <svg id="line" viewBox="0 0 560 300" role="img" aria-label="График охватов по месяцам"></svg>
+      <div class="lg"><span style="color:#B9B9B9">факт 2025</span><span style="color:#20242B">план 2026</span><span style="color:#FF7633">факт 2026</span></div>
+      <p class="note" id="lineNote"></p>
+    </div>
+    <div class="panel rv" style="margin-top:0">
+      <span class="tag">Инсайт 3</span>
+      <h3 style="font-size:clamp(24px,2.6vw,32px);margin-bottom:16px">Две разные задачи</h3>
+      <div class="groups">
+        <div class="grp">
+          <h3>Крупные: вернуть охват</h3>
+          <p>Ниже прошлого года, но у Эли и Вили есть майский отскок: <b>+32,5%</b> и <b>+8,9%</b> к апрелю.</p>
+          <div class="chips"><span>Эля</span><span>Оля</span><span>Виля</span><span>Неля</span></div>
+        </div>
+        <div class="grp up">
+          <h3>Маленькие: пересобрать план</h3>
+          <p>Растут год к году, но до плана не дотягивают: его ставили с запасом в 1,4–8 раз к прошлому году.</p>
+          <div class="chips"><span>Миша</span><span>Саша</span><span>Регина</span><span>Кирилл</span><span>Артём</span><span>Даня</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</section>
+
+<!-- CHANNELS -->
+<section id="channels" class="wrap">
+  <span class="tag rv">Задание №2 · каналы сейчас</span>
+  <h2 class="blur" data-blur>Три канала — три разные задачи</h2>
+  <p class="lead rv">Снимок публичной ленты с 8 сентября по 6 октября 2026. ER — медианные просмотры поста к числу подписчиков.</p>
+  <div class="chs" id="chs"></div>
+  <div class="insight rv">
+    <b class="big">≈ −35%</b>
+    <p><strong>Охват съедает плотность.</strong> У Вили в дни с 6–7 постами медиана ~940 против ~1 500 в обычные дни: 3 кружка ушли за одну минуту. У Ланы 21 сентября вышло 9 постов, из них 5 опросов за 4 минуты, охват ~260. При этом <strong>анонс Годового курса — в топе у всех трёх</strong>: продажи охват не роняют.</p>
+  </div>
+</section>
+
+<!-- HYPOTHESES -->
+<section id="hypotheses" class="wrap">
+  <span class="tag rv">Задание №2 · гипотезы</span>
+  <h2 class="blur" data-blur>9 гипотез: по три на канал</h2>
+  <p class="lead rv">У каждой — что делаем и как поймём, что сработало. <b>Нажми на гипотезу</b> — справа появится пример поста.</p>
+  <div class="tabs rv" id="tabs"></div>
+  <div id="hyps"></div>
+</section>
+
+<!-- START -->
+<section id="start" class="wrap">
+  <span class="tag rv">Если меня берут</span>
+  <h2 class="blur" data-blur>С чего начну в&nbsp;первые две недели</h2>
+  <div class="steps">
+    <div class="step rv"><div class="k">1</div><h3>Пересчитать планы</h3><p>Считать план от обычного уровня канала — медианы за несколько месяцев, — а не от рекордного месяца прошлого года. Отдельно учесть просадку рынка и отдельно рост от рекламы. Тогда сразу видно, где канал правда проседает, а где просто сравнили с пиком.</p></div>
+    <div class="step rv"><div class="k">2</div><h3>Правило «≤3 постов в день»</h3><p>Склеиваем цепочки, опросы — по одному в день. Гипотезы В1 и Л2.</p><span class="free">0 ₽ · эффект через 2 недели</span></div>
+    <div class="step rv"><div class="k">3</div><h3>Папка и кросс-промо</h3><p>Общая папка каналов школы и совместные выпуски, у каждого своя invite-ссылка. Гипотезы Э2 и Л3.</p><span class="free">0 ₽ · растит маленькие каналы</span></div>
+    <div class="step rv"><div class="k">4</div><h3>Решения по данным</h3><p>Через 2 недели решаем по каждой гипотезе: оставить, докрутить или выключить. Дальше Э1, В2, В3 и Л1.</p></div>
+  </div>
+</section>
+
+<!-- FINAL -->
+<div class="final">
+  <div class="giant" aria-hidden="true">СМИТАП</div>
+  <div class="card rv">
+    <h2>Готов обсудить на&nbsp;созвоне</h2>
+    <p>Любую гипотезу могу развернуть в контент-план, а любую цифру — объяснить. Спасибо, что дочитали 🧡</p>
+  </div>
+  <details class="rv">
+    <summary>Источники, ограничения и ответы на «а как же…»</summary>
+    <ul>
+      <li>Цифры по 10 каналам — таблица из тестового задания (средний охват поста, март–май 2025 и 2026).</li>
+      <li>Снимок каналов — публичные ленты t.me/elya_smith, t.me/VilochkaBrik, t.me/Lana_Silverr за 8 сентября — 6 октября 2026. Просмотры накопленные, посты за последние два дня в медиану не входят.</li>
+      <li>Рынок: <a href="https://adindex.ru/news/tendencies/2026/05/15/345027.phtml" target="_blank" rel="noopener">AdIndex</a> и <a href="https://www.amic.ru/news/ohvaty-telegram-kanalov-proseli-na-1015-s-serediny-marta-583934" target="_blank" rel="noopener">Амител</a>, 15 мая 2026, со ссылкой на Digital.точнее; <a href="https://www.kommersant.ru/doc/8622671" target="_blank" rel="noopener">Коммерсантъ</a>.</li>
+      <li>В таблице «Саша Сильвер», а по ссылке сейчас канал Ланы. Весенние цифры Саши Лане не приписываю.</li>
+      <li>Внутренней статистики (пересылки, источники подписок, бюджеты) у меня нет, поэтому причины — гипотезы, которые проверяются в первую неделю.</li>
+    </ul>
+    <div class="faq">
+      <h4>Что вы можете спросить сразу</h4>
+      <div class="qa"><b>«Медиану и ER вы считали по публичной ленте, а не по нашей статистике»</b><p>Да, внутренних данных у меня не было. Первым делом сверю всё на вашей статистике: просмотры через 48 часов, подписчики на дату поста, источники подписок. Выводы могут уточниться, но логика проверки останется той же.</p></div>
+      <div class="qa"><b>«Охват в плотные дни проседает из-за вебинаров и розыгрышей, а не из-за числа постов»</b><p>Возможно, это корреляция, а не причина. Поэтому В1 — тест на 2 недели, а не правило с первого дня: сравню похожие дни с цепочками и без них.</p></div>
+      <div class="qa"><b>«Папку каналов и коллабы мы уже делаем»</b><p>Отлично, тогда я не начинаю с нуля, а добавляю замер: отдельная invite-ссылка на каждую связку, чтобы видеть, какие из них реально приводят людей, которые остаются.</p></div>
+      <div class="qa"><b>«В продающие дни трёх постов не хватит»</b><p>Согласен, жёсткий лимит не нужен. Суть В1 — склеивать цепочки служебных сообщений в один пост. Для старта потока или вебинара делаем исключение, но заранее планируем слоты.</p></div>
+      <div class="qa"><b>«Откуда цифры в макетах постов?»</b><p>Это иллюстрация, как пост выглядит в ленте: просмотры — на уровне текущей медианы, а реакции и проценты в викторинах условные. Прогноз результата даю только в метриках гипотез.</p></div>
+      <div class="qa"><b>«Сделано с ИИ — а сам что-то понимаешь?»</b><p>ИИ помог собрать ленты, посчитать и сверстать. Выбор гипотез, приоритеты и то, что я бы реально запустил, — мои. На созвоне спокойно разберу любой вывод.</p></div>
+    </div>
+  </details>
+  <footer>Тестовое задание · тимлид Telegram · СМИТАП · октябрь 2026</footer>
+</div>
+
+<div class="tip" id="tip"></div>
+
+<script>
+/* ---------- data ---------- */
+const M=['Март','Апрель','Май'];
+const D=[
+ ['Эля Смит','история',[7854,8447,10293],[7571,8057,9839],[7557,7064,9363]],
+ ['Оля Вебер','',[4997,6059,6506],[5093,6221,6599],[4552,4817,4602]],
+ ['Виля Брик','литература',[2663,2913,3103],[2881,3131,3278],[2430,2494,2716]],
+ ['Неля Лотман','',[4080,3953,7392],[4185,4053,7354],[3528,3210,3770]],
+ ['Миша Гис','',[661,698,731],[1088,1089,1078],[951,744,720]],
+ ['Саша Сильвер','химия',[495,541,616],[760,772,935],[541,589,654]],
+ ['Регина Брайт','',[1405,1494,1648],[1967,2005,2163],[1692,1695,1544]],
+ ['Кирилл Нэш','',[1689,1903,4055],[2402,2688,4602],[1934,1882,1699]],
+ ['Артём Вольт','',[373,409,414],[543,522,534],[493,544,511]],
+ ['Даня Байт','',[140,171,150],[1121,1014,916],[722,902,812]]
+];
+const nf=n=>Math.round(n).toLocaleString('ru-RU');
+const pf=v=>(v>0?'+':v<0?'−':'')+Math.abs(v).toFixed(1).replace('.',',')+'%';
+
+/* marquee */
+const tools=['quiz-опросы','папки каналов','invite-ссылки','кружки','голосовые','комментарии','посевы','Telegram Ads','отложенные посты','боты практики','бусты','UTM'];
+document.getElementById('mq').innerHTML=[...tools,...tools].map(t=>`<span>${t}</span>`).join('');
+
+/* heatmap */
+const heat=document.getElementById('heat');
+let h='<div class="h"></div>'+M.map(m=>`<div class="h">${m}</div>`).join('');
+D.forEach((r,i)=>{
+  const [fn,ln]=r[0].split(' ');h+=`<div class="nm">${fn}<span class="sn"> ${ln}</span>${r[1]?`<i>${r[1]}</i>`:''}</div>`;
+  for(let k=0;k<3;k++){
+    const v=(r[4][k]/r[2][k]-1)*100;
+    const t=Math.min(Math.abs(v)/50,1);
+    const bg=v<0?`rgba(249,93,81,${.12+t*.88})`:`rgba(71,152,167,${.12+t*.88})`;
+    const col=t>.45?'#fff':'#202020';
+    h+=`<div class="c${k==1?' apr':''}" style="background:${bg};color:${col};transition-delay:${(i*3+k)*25}ms" data-tip="<b>${r[0]} · ${M[k]}</b><br>Факт 2025: ${nf(r[2][k])}<br>План 2026: ${nf(r[3][k])}<br>Факт 2026: ${nf(r[4][k])} (${Math.round(r[4][k]/r[3][k]*100)}% плана)">${pf(v)}</div>`;
+  }
+});
+heat.innerHTML=h;
+document.getElementById('focusApr').onclick=e=>{heat.classList.toggle('focus');e.target.textContent=heat.classList.contains('focus')?'Убрать подсветку':'Подсветить апрель'};
+const tip=document.getElementById('tip');
+heat.addEventListener('mousemove',e=>{const c=e.target.closest('.c');if(!c){tip.style.opacity=0;return}tip.innerHTML=c.dataset.tip;tip.style.opacity=1;const x=Math.min(e.clientX+14,innerWidth-tip.offsetWidth-10);tip.style.left=x+'px';tip.style.top=(e.clientY+14)+'px'});
+heat.addEventListener('mouseleave',()=>tip.style.opacity=0);
+
+/* line chart */
+const notes={
+ 'Неля Лотман':'Май 2025 — <b>7 392</b> при обычных ~4 000. План повторил пик (7 354), отсюда «−49%». При этом май 2026 (3 770) — <b>лучший месяц Нели этой весной</b>.',
+ 'Кирилл Нэш':'Май 2025 — <b>4 055</b> при обычных ~1 800. План 4 602 → факт 1 699, отсюда «−58%». Реальная динамика 2026 — плавное снижение, без обвала.',
+ 'Эля Смит':'План был ниже прошлого года, но и его не взяли. Зато майский отскок к апрелю <b>+32,5%</b> — аудитория откликается на экзаменационный сезон.',
+ 'Даня Байт':'Рост ×5 к прошлому году, но план стоял <b>×8</b>. Канал растёт отлично, а по таблице выглядит красным.'
+};
+const lineKeys=['Неля Лотман','Кирилл Нэш','Эля Смит','Даня Байт'];
+const lp=document.getElementById('lineP'),svg=document.getElementById('line'),ln=document.getElementById('lineNote');
+lp.innerHTML=lineKeys.map((k,i)=>`<button class="${i?'':'on'}" data-k="${k}">${k.split(' ')[0]}</button>`).join('');
+function drawLine(name){
+  const r=D.find(x=>x[0]===name);const W=560,H=300,pl=58,pr=28,pt=24,pb=40;
+  const max=Math.max(...r[2],...r[3],...r[4])*1.12;
+  const X=i=>pl+i*(W-pl-pr)/2, Y=v=>pt+(H-pt-pb)*(1-v/max);
+  let s='';
+  for(let g=0;g<=4;g++){const v=max*g/4;s+=`<line x1="${pl}" x2="${W-pr}" y1="${Y(v)}" y2="${Y(v)}" stroke="#EEE" />`+`<text x="${pl-10}" y="${Y(v)+4}" text-anchor="end" font-size="12" fill="#999">${nf(v)}</text>`}
+  M.forEach((m,i)=>s+=`<text x="${X(i)}" y="${H-12}" text-anchor="middle" font-size="13" font-weight="600" fill="#555">${m}</text>`);
+  const ser=[[r[2],'#B9B9B9','8 7'],[r[3],'#20242B','2 8'],[r[4],'#FF7633','']];
+  ser.forEach(([vals,c,dash],si)=>{
+    const d=vals.map((v,i)=>`${i?'L':'M'}${X(i)},${Y(v)}`).join(' ');
+    s+=`<path class="ln" d="${d}" stroke="${c}" ${dash?`stroke-dasharray="${dash}"`:''} data-s="${si}"/>`;
+    vals.forEach((v,i)=>{s+=`<circle cx="${X(i)}" cy="${Y(v)}" r="${si==2?6:4.5}" fill="${si==2?'#FF7633':'#fff'}" stroke="${c}" stroke-width="3"/>`});
+  });
+  const v=r[4][2];s+=`<g><rect x="${X(2)-46}" y="${Y(v)+12}" width="92" height="26" rx="13" fill="#FF7633"/><text x="${X(2)}" y="${Y(v)+30}" text-anchor="middle" font-size="13" font-weight="800" fill="#fff">${nf(v)}</text></g>`;
+  svg.innerHTML=s;
+  svg.querySelectorAll('.ln').forEach(p=>{if(p.dataset.s==='2'){const L=p.getTotalLength();p.style.strokeDasharray=L;p.style.setProperty('--len',L);p.classList.add('draw')}});
+  ln.innerHTML=notes[name];
+}
+lp.onclick=e=>{const b=e.target.closest('button');if(!b)return;lp.querySelectorAll('button').forEach(x=>x.classList.toggle('on',x===b));drawLine(b.dataset.k)};
+drawLine('Неля Лотман');
+
+/* channels */
+const CH=[
+ {n:'Эля Смит',s:'история',c:'#FF7633',i:'ЭС',sub:'28,7K',med:'4,9K',er:17,ppd:'2,2',good:'методички (6,1K), личное — реп-йога 5,6K',bad:'игры-цепочки из 3 этапов (~3,1K)',goal:'раздать охват сети'},
+ {n:'Виля Брик',s:'литература',c:'#6849AA',i:'ВБ',sub:'11,3K',med:'1,5K',er:13,ppd:'3,0',good:'подборка вебинаров (2K), скрипты, Грибоедов',bad:'3 кружка за минуту (~850)',goal:'собрать ленту'},
+ {n:'Лана Сильвер',s:'химия',c:'#4798A7',i:'ЛС',sub:'5,5K',med:'340',er:6,ppd:'2,8',good:'кола, «соскучилась по учёбе», коллаб с Мишей Гис',bad:'5 опросов за 4 минуты (~260)',goal:'расти'}
+];
+document.getElementById('chs').innerHTML=CH.map(c=>`
+<div class="ch rv">
+  <div class="top"><div class="ava" style="background:${c.c}">${c.i}<small>${c.er}%</small></div><div><h3>${c.n}</h3><div class="subj">${c.s}</div></div></div>
+  <div class="kpis"><div class="kpi"><b>${c.sub}</b><span>подписчиков</span></div><div class="kpi"><b>${c.med}</b><span>медиана просмотров</span></div><div class="kpi"><b>${c.ppd}</b><span>постов в день</span></div></div>
+  <div><div style="display:flex;justify-content:space-between;font-size:13px;color:#757575;margin-bottom:6px"><span>ER</span><b style="color:#202020">~${c.er}%</b></div><div class="erbar"><i data-w="${c.er/20*100}" style="background:${c.c}"></i></div></div>
+  <div class="row"><b>👍</b><span>${c.good}</span></div>
+  <div class="row"><b>👎</b><span>${c.bad}</span></div>
+  <div class="goal">Задача: <span>${c.goal}</span></div>
+</div>`).join('');
+
+/* hypotheses */
+const HY=[
+ {k:'elya',t:'Эля',c:'#FF7633',av:'ЭС',name:'Эля Смит | История ЕГЭ',subs:'28 700 подписчиков',items:[
+   {code:'Э1',h:'Методичка, которая возвращает',p:'Раздача по расписанию → на следующий день quiz-опрос по ней → разбор частой ошибки. Одна тема, три касания.',m:'охват постов 2 и 3 ≥ 80% от раздачи'},
+   {code:'Э2',h:'Папка «11 класс со СМИТАП»',p:'Общая папка всех предметных каналов школы плюс кроссоверы: история × литература («Капитанская дочка» и Пугачёвщина). Эля — крупнейший канал и раздаёт охват остальным.',m:'вступления по отдельным invite-ссылкам',e:'0 ₽'},
+   {code:'Э3',h:'Личное с учебным хвостом',p:'Личные посты держат охват. Добавляем в них quiz-опрос по тому, что Эля увидела на прогулке, а разбор — в комментариях.',m:'≥5% голосов без потери охвата'}
+ ]},
+ {k:'vilya',t:'Виля',c:'#6849AA',av:'ВБ',name:'Виля Брик | Литература',subs:'11 300 подписчиков',items:[
+   {code:'В1',h:'Не больше 3 постов в день',p:'Склеиваем цепочки («Привет. Что делаешь?» + анонс = один пост), три кружка подряд — в один. Анонсы ставим в отложку на фиксированные слоты.',m:'медиана ↑, недельный охват и регистрации не падают',e:'0 ₽'},
+   {code:'В2',h:'«Допиши абзац»',p:'Фрагмент работы на 100 баллов без последней фразы → читатели дописывают в комментариях → назавтра Виля голосом разбирает 3 лучших.',m:'≥30 содержательных комментариев'},
+   {code:'В3',h:'Диагностика перед вебинаром',p:'За день до эфира quiz-опрос на ловушку из темы и сразу «разберём завтра в 18:00». Анонс отвечает на вопрос «зачем мне туда идти».',m:'регистрации по UTM на 1 000 просмотров, +15%'}
+ ]},
+ {k:'lana',t:'Лана',c:'#4798A7',av:'ЛС',name:'Лана Сильвер | Химия',subs:'5 490 подписчиков',items:[
+   {code:'Л1',h:'Химия, которую пересылают',p:'Кола, газ, доширак при отравлении — 2 раза в неделю карусель «химия из жизни» с призывом переслать. Лучшие выпуски становятся креативом для посевов.',m:'пересылки / просмотры, цена подписчика'},
+   {code:'Л2',h:'Викторина без спама',p:'Вместо 5 опросов за 4 минуты — «Химический марафон»: один quiz в день всю неделю, в воскресенье итоги и подарок. Ученики сами жаловались на неудобство.',m:'охват ленты, доля дошедших до 7-го дня'},
+   {code:'Л3',h:'Кросс-промо внутри школы',p:'Раз в 2 недели совместный выпуск с соседним предметом. Коллаб с Мишей Гис (биология) уже в топе её постов (402).',m:'вступления по ссылке, ER новичков через 14 дней',e:'0 ₽'}
+ ]}
+];
+const tabs=document.getElementById('tabs'),hyps=document.getElementById('hyps');
+tabs.innerHTML=HY.map((x,i)=>`<button class="${i?'':'on'}" data-k="${x.k}"><span class="dot" style="background:${x.c}"></span>${x.t}</button>`).join('');
+hyps.innerHTML=HY.map((x,i)=>`
+<div class="hyp ${i?'':'on'}" id="h-${x.k}">
+  <div class="hcards">${x.items.map((it,j)=>`
+    <div class="hc ${j?'':'on'}" data-code="${it.code}" role="button" tabindex="0">
+      <span class="go">${j?'смотреть пост →':'пост справа ✓'}</span>
+      <div class="hd"><span class="code">${it.code}</span><div><h3>${it.h}</h3><p>${it.p}</p></div></div>
+      <div class="m"><span class="mt">📊 ${it.m}</span>${it.e?`<span class="ex">💸 ${it.e}</span>`:''}</div>
+    </div>`).join('')}
+    <div class="hint">Пороги — ориентиры пилота: уточню их после замера исходных значений.</div>
+  </div>
+  <div class="phone">
+    <div class="screen">
+      <div class="tgbar"><span class="back">‹</span><div class="av" style="background:${x.c}">${x.av}</div><div><b>${x.name}</b><small>${x.subs}</small></div></div>
+      <div class="chat" data-code="${x.items[0].code}"></div>
+    </div>
+    <div class="mock-cap">${x.items[0].code} · ${x.items[0].h} · макет</div>
+  </div>
+</div>`).join('');
+
+const poll=(q,opts,lbl='Викторина')=>`<div class="poll"><div class="q">${q}</div><div class="lbl">${lbl}</div>${opts.map(([t,v,ok])=>`<div class="opt${ok?' ok':''}" style="--w:${v}%"><i></i><span>${t}</span><b>${v}%</b></div>`).join('')}</div>`;
+const meta=(v,t)=>`<div class="meta"><span>👁 ${v}</span><span>${t}</span></div>`;
+const wave=()=>'<div class="wave">'+[8,14,20,12,24,16,10,22,18,9,15,26,12,19,8,14,21,11,17,7,13,20,10,16].map(h=>`<i style="height:${h}px"></i>`).join('')+'</div>';
+const MOCK={
+ 'Э1':()=>`
+  <div class="date">понедельник</div>
+  <div class="msg small"><div class="doc"><span class="ic">📄</span><div><b>Методичка_Древняя_Русь.pdf</b><small>2,4 МБ</small></div></div>Методичка месяца: Древняя Русь 🪷 Сохраняй — завтра проверим, как она работает${meta('4,9K','12:00')}</div>
+  <div class="date">вторник</div>
+  <div class="msg">Вчера вы забрали методичку — проверим её в деле 👇 1 вопрос, 10 секунд${poll('Кто из князей сделал христианство государственной религией Руси в 988 году?',[['Княгиня Ольга',31],['Владимир Святославич',54,1],['Ярослав Мудрый',12],['Святослав',3]])}${meta('4,6K','12:00')}</div>
+  <div class="date">среда</div>
+  <div class="msg small">Разбор: почему 31% выбрали Ольгу 👀 Она крестилась сама, около 957 года, а Русь крестил её внук — Владимир. Запоминаем: Ольга — личный выбор, Владимир — государственный 🔥${meta('4,4K','12:00')}</div>`,
+ 'Э2':()=>`
+  <div class="date">сегодня</div>
+  <div class="msg"><div class="img" style="background:linear-gradient(135deg,#FF7633,#FFAA44)"><span class="dots"><i></i><i></i><i></i></span><small>папка · 11 класс</small>Все преподы СМИТАП — одной кнопкой</div>
+  Сдаёшь историю и литературу? 📚<br><br>Собрала в одну папку всех преподов СМИТАП: одна кнопка — и ты подписан на всех, кто нужен к ЕГЭ.<br><br>А в четверг у нас с Вилей кроссовер: <b>«Капитанская дочка» глазами историка и литератора</b> — Пугачёвщина, которая встречается в обоих экзаменах 🔥
+  <div class="reacts"><span>🔥 140</span><span>❤️ 96</span></div>${meta('4,9K','12:00')}</div>
+  <div class="ikb">📁 Добавить папку «11 класс со СМИТАП»</div>`,
+ 'Э3':()=>`
+  <div class="date">сегодня</div>
+  <div class="msg"><div class="img" style="background:linear-gradient(160deg,#6849AA,#C44B76)"><span class="dots"><i></i><i></i></span><small>Эля гуляет · Невский</small>Узнаёте собор? 👀</div>
+  Гуляла сегодня по Невскому и не удержалась от проверки 😏 Культуру на ЕГЭ любят как раз за такие вопросы${poll('Кто архитектор Казанского собора?',[['Растрелли',22],['Воронихин',47,1],['Монферран',26],['Росси',5]])}
+  <div class="reacts"><span>❤️ 210</span><span>🔥 88</span></div>${meta('5,1K','19:40')}</div>
+  <div class="msg small">Разбор — в комментариях 👇 Там же ещё 2 похожих задания по культуре XIX века${meta('4,7K','19:41')}</div>`,
+ 'В1':(mode)=> mode!=='after'?`
+  <div class="date">было · 6 октября</div>
+  <div class="msg small">Привет. Что делаешь? Какие планы на завтрашний вечер?${meta('581','18:02')}</div>
+  <div class="msg small">Почему спрашиваю — хочу позвать вас на завтрашний совместный вебинар по «Ревизору»…${meta('616','18:03')}</div>
+  <div class="msg small">🎧 «Ревизор» Н. В. Гоголя: подробный разбор для ЕГЭ…${meta('595','18:05')}</div>
+  <div class="msg small">Скрипт для завтрашнего занятия! 👉 регистрация${meta('356','20:40')}</div>`:`
+  <div class="date">стало</div>
+  <div class="msg"><div class="cn">Виля Брик</div>Что делаешь завтра вечером? 😏<br><br>Зову на совместный вебинар по <b>«Ревизору»</b> Гоголя. Через ассоциации раз и навсегда запомним всех героев и разберём ловушки из заданий.<br><br>📅 Завтра, 18:00 МСК<br>📎 Скрипт занятия — в комментариях
+  <div class="reacts"><span>❤️ 42</span><span>🔥 17</span></div>${meta('1,5K','18:00')}</div>
+  <div class="ikb">👉 Зарегистрироваться</div>`,
+ 'В2':()=>`
+  <div class="date">понедельник</div>
+  <div class="msg"><div class="cn">Виля Брик</div>«Допиши абзац» #3 ✍️<br><br>Фрагмент из работы на 100 баллов (с разрешения автора):<div class="quote">Гринёв проходит через все испытания, следуя завету отца «береги честь смолоду». Даже под угрозой казни он отказывается присягнуть Пугачёву…</div>Чего не хватает? Вывода, который вернёт нас к тезису. Допиши его в комментариях — 3 лучших разберу завтра голосом 🎧
+  ${meta('1,5K','17:00')}<div class="cmt"><span>💬 Комментировать</span><span>›</span></div></div>
+  <div class="date">вторник</div>
+  <div class="msg small"><div class="voice"><span class="pl">▶</span><div>${wave()}<small>1:12 · разбираю ваши варианты</small></div></div>${meta('1,4K','17:00')}</div>`,
+ 'В3':()=>`
+  <div class="date">накануне вебинара</div>
+  <div class="msg"><div class="cn">Виля Брик</div>Проверим перед завтрашним вебинаром 👀${poll('«Чему смеётесь? Над собою смеётесь!» — чья это реплика?',[['Хлестаков',41],['Городничий',38,1],['Бобчинский',13],['Осип',8]])}${meta('1,5K','17:00')}</div>
+  <div class="msg small">62% ошиблись — и это нормально 😌 Завтра в 18:00 разберём, почему эту фразу говорит Городничий, и ещё 3 ловушки по «Ревизору» из заданий ЕГЭ${meta('1,4K','20:00')}</div>
+  <div class="ikb">👉 Зарегистрироваться на вебинар</div>`,
+ 'Л1':()=>`
+  <div class="date">сегодня</div>
+  <div class="msg"><div class="img" style="background:linear-gradient(135deg,#4798A7,#2E6E7A)"><span class="dots"><i></i><i></i><i></i><i></i></span><small>химия из жизни #4</small>Почему газ нельзя нюхать «чтобы проверить»</div>
+  Так точно делать не стоит… 🧪<br><br>Бытовой газ сам по себе почти без запаха — «запах газа» ему специально добавляют, чтобы заметить утечку. А угарный газ не пахнет вообще.<br><br>Листай карусель → там 3 вещества, которые на ЕГЭ узнают по описанию свойств 👀
+  <div class="reacts"><span>🤯 18</span><span>🔥 11</span></div>${meta('340','17:30')}</div>
+  <div class="ikb">↪ Отправь другу, который всё проверяет на себе</div>`,
+ 'Л2':()=>`
+  <div class="date">среда</div>
+  <div class="msg"><b>🧪 Химический марафон · день 3 из 7</b><div class="days"><i class="d"></i><i class="d"></i><i class="d"></i><i></i><i></i><i></i><i></i></div>${poll('Какое вещество называют «гашёной известью»?',[['CaO',29],['Ca(OH)₂',51,1],['CaCO₃',17],['CaSO₄',3]])}${meta('360','17:00')}</div>
+  <div class="msg small">Один вопрос в день, в 17:00. В воскресенье — итоги и подарок тем, кто пройдёт все 7 дней 🎁${meta('350','17:01')}</div>`,
+ 'Л3':()=>`
+  <div class="date">сегодня</div>
+  <div class="msg"><div class="img" style="background:linear-gradient(135deg,#418A50,#4798A7)"><span class="dots"><i></i><i></i></span><small>коллаб · биология × химия</small>Один процесс — два взгляда</div>
+  Мы с Мишей Гис разбираем ферменты 🧬🧪<br><br>Для химика фермент — это катализатор: ускоряет реакцию, но сам в ней не расходуется. А почему он работает только при определённой температуре — рассказывает Миша у себя 👇
+  <div class="reacts"><span>❤️ 24</span><span>🔥 15</span></div>${meta('410','16:00')}</div>
+  <div class="ikb">🧬 Перейти в канал Миши Гис</div>`
+};
+function playMock(el,code,mode){
+  code=code||el.dataset.code; el.dataset.code=code;
+  el.innerHTML='<div class="typing"><i></i><i></i><i></i></div>';
+  clearTimeout(el._t);
+  el._t=setTimeout(()=>{
+    el.innerHTML=MOCK[code](mode)+(code==='В1'?`<div class="ba"><div class="pills"><button class="${mode!=='after'?'on':''}" data-m="before">Было</button><button class="${mode==='after'?'on':''}" data-m="after">Стало</button></div></div>`:'');
+    [...el.querySelectorAll('.msg,.ikb')].forEach((m,i)=>setTimeout(()=>m.classList.add('show'),i*260));
+    el.dataset.played=1;
+  },700);
+}
+function pickCard(card){
+  const hyp=card.closest('.hyp');
+  hyp.querySelectorAll('.hc').forEach(c=>{const on=c===card;c.classList.toggle('on',on);c.querySelector('.go').textContent=on?'пост справа ✓':'смотреть пост →'});
+  const it=HY.flatMap(x=>x.items).find(x=>x.code===card.dataset.code);
+  hyp.querySelector('.mock-cap').textContent=`${it.code} · ${it.h} · макет`;
+  playMock(hyp.querySelector('.chat'),it.code);
+  if(innerWidth<960)hyp.querySelector('.phone').scrollIntoView({behavior:'smooth',block:'center'});
+}
+document.addEventListener('click',e=>{
+  const b=e.target.closest('.ba button');if(b){playMock(b.closest('.chat'),'В1',b.dataset.m);return}
+  const c=e.target.closest('.hc');if(c&&!c.classList.contains('on'))pickCard(c);
+});
+document.addEventListener('keydown',e=>{const c=e.target.closest&&e.target.closest('.hc');if(c&&(e.key==='Enter'||e.key===' ')){e.preventDefault();pickCard(c)}});
+tabs.onclick=e=>{const b=e.target.closest('button');if(!b)return;tabs.querySelectorAll('button').forEach(x=>x.classList.toggle('on',x===b));
+  document.querySelectorAll('.hyp').forEach(x=>x.classList.toggle('on',x.id==='h-'+b.dataset.k));
+  playMock(document.querySelector('#h-'+b.dataset.k+' .chat'))};
+
+/* blur words */
+document.querySelectorAll('[data-blur]').forEach(el=>{
+  const walk=n=>{[...n.childNodes].forEach(c=>{
+    if(c.nodeType===3){const f=document.createDocumentFragment();c.textContent.split(/(\s+)/).forEach(p=>{if(!p)return;if(/^\s+$/.test(p))f.appendChild(document.createTextNode(p));else{const s=document.createElement('span');s.className='w';s.textContent=p;f.appendChild(s)}});c.replaceWith(f)}
+    else if(c.nodeType===1&&!c.classList.contains('w'))walk(c)})};
+  walk(el);el.querySelectorAll('.w').forEach((w,i)=>w.style.transitionDelay=i*70+'ms');
+});
+
+/* counters */
+function count(el){const to=+el.dataset.count,suf=el.dataset.suffix||'',t0=performance.now(),d=1300;
+  const step=t=>{const p=Math.min((t-t0)/d,1),e=1-Math.pow(1-p,3),v=Math.round(to*e);el.textContent=(v<0?'−'+Math.abs(v):v)+suf;if(p<1)requestAnimationFrame(step)};requestAnimationFrame(step)}
+
+/* observer */
+const io=new IntersectionObserver(es=>es.forEach(en=>{if(!en.isIntersecting)return;const t=en.target;t.classList.add('in');
+  t.querySelectorAll&&t.querySelectorAll('[data-count]').forEach(count);
+  t.querySelectorAll&&t.querySelectorAll('.erbar i').forEach(i=>i.style.width=i.dataset.w+'%');
+  if(t.classList.contains('phone')){const ch=t.querySelector('.chat');if(!ch.dataset.played)playMock(ch)}
+  io.unobserve(t)}),{threshold:.15});
+document.querySelectorAll('.rv,[data-blur],.heat,.phone').forEach(el=>io.observe(el));
+
+/* progress + active nav */
+const prog=document.getElementById('progress'),links=[...document.querySelectorAll('nav.top a')];
+const secs=links.map(a=>document.querySelector(a.getAttribute('href')));
+addEventListener('scroll',()=>{const s=scrollY,h=document.documentElement.scrollHeight-innerHeight;prog.style.width=(s/h*100)+'%';
+  let cur=-1;secs.forEach((x,i)=>{if(x.getBoundingClientRect().top<innerHeight*.4)cur=i});links.forEach((a,i)=>a.classList.toggle('active',i===cur))},{passive:true});
+</script>
+</body>
+</html>
